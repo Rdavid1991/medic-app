@@ -1,31 +1,8 @@
-import React, { createElement, useState } from 'react'
-import { daysOfMont } from '../../../helpers';
+import React from 'react'
+import { getRows,daysOfMont } from '../helpers';
 
-export const Month = () => {
-    const [date, setDate] = useState({
-        month: new Date().getMonth(),
-        year: new Date().getFullYear()
-    })
-
-    const getRows = () => {
-        let td = [], tr = [], count = 0, countDay = 0;
-        for (let i = 0; i < 6; i++) {
-            td = []
-            for (let j = 0; j < 7; j++) {
-                count++
-                let day = new Date(date.year, date.month).getDay()
-                if (count > day && count - day <= daysOfMont(date.month).value) {
-                    countDay++
-                    td.push(createElement('td', null, countDay))
-                } else {
-                    td.push(createElement('td', null, ""))
-                }
-            }
-            tr.push(createElement('tr', null, [td]))
-        }
-        return tr;
-    }
-
+export const Month = ({date,setDate}) => {
+    
     const getMonths = ()=>{
         let options=[];
         for (let i = 0; i < 12; i++) {
@@ -36,7 +13,7 @@ export const Month = () => {
 
     const getYears = ()=>{
         let options=[];
-        for (let i = date.year - 99; i <= date.year ; i++) {
+        for (let i = date.year - 50; i <= Number(date.year) + 50 ; i++) {
             options.push(<option value={i}>{i}</option>)
         }
         return options;
@@ -44,6 +21,7 @@ export const Month = () => {
 
     return (
         <>
+        <h1>{daysOfMont(date.month).name} {date.year}</h1>
         <select value={date.year} onChange={(e) => setDate({ ...date, year: e.target.value })}>
             {getYears()}
         </select>
@@ -65,7 +43,7 @@ export const Month = () => {
                 </tr>
             </thead>
             <tbody>
-                {getRows()}
+                {getRows(date)}
             </tbody>
         </table>
     </>
