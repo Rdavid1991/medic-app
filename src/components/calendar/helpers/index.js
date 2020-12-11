@@ -3,22 +3,47 @@ import { createElement } from 'react'
 const getRows = (date) => {
     let td = [], tr = [], count = 0, countDay = 0;
     let day = new Date(date.year, date.month).getDay();
-    let previousDaysOfMonth = daysOfMont(date.month - 1 ).value - day + 1;
+    let previousDaysOfMonth = daysOfMont(date.month - 1).value - day + 1;
     let nextDaysOfMonth = 1;
+    let todayClass;
 
     for (let i = 0; i < 6; i++) {
         td = []
         for (let j = 0; j < 7; j++) {
             count++
-    
+
             if (count > day && count - day <= daysOfMont(date.month).value) {
+
                 countDay++
-                td.push(createElement('td', null, countDay))
+
+                todayClass = (new Date().getDate() === countDay && new Date().getMonth() === date.month && new Date().getFullYear() === Number(date.year))? 'day today' : 'day';
+
+                td.push(createElement(
+                    'td',
+                    { className: todayClass },
+                    createElement('div', { className: 'current_month' }, countDay)
+                ))
             } else if (count - day <= daysOfMont(date.month).value) {
-                
-                td.push(createElement('td', null, previousDaysOfMonth++))
+
+                previousDaysOfMonth++
+
+                todayClass = (new Date().getDate() === previousDaysOfMonth && new Date().getMonth() === date.month - 1 && new Date().getFullYear() === Number(date.year))? 'day today' : 'day';
+
+                td.push(createElement(
+                    'td',
+                    { className: todayClass },
+                    createElement('div', { className: 'previous_month' }, previousDaysOfMonth)
+                ))
             } else {
-                td.push(createElement('td', null, nextDaysOfMonth++))
+                nextDaysOfMonth++
+
+                todayClass = (new Date().getDate() === nextDaysOfMonth && new Date().getMonth() === date.month + 1 && new Date().getFullYear() === Number(date.year))? 'day today' : 'day';
+
+                td.push(createElement(
+                    'td',
+                    { className: todayClass },
+                    createElement('div', { className: 'next_month' }, nextDaysOfMonth)
+                ))
             }
         }
         tr.push(createElement('tr', null, [td]))
@@ -36,7 +61,7 @@ function daysOfMont(item) {
     let feb;
     isLeap(new Date().getFullYear()) ? feb = 29 : feb = 28;
 
-    if(item < 0){
+    if (item < 0) {
         item = 11
     }
 
