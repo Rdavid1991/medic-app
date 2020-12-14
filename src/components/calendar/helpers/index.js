@@ -4,8 +4,7 @@ const getRows = (date) => {
     let td = [], tr = [], count = 0, countDay = 0;
     let day = new Date(date.year, date.month).getDay();
     let previousDaysOfMonth = daysOfMont(date.month - 1).value - day + 1;
-    let nextDaysOfMonth = 1;
-    let todayClass;
+    let nextDaysOfMonth = 0;
 
     for (let i = 0; i < 6; i++) {
         td = []
@@ -13,42 +12,64 @@ const getRows = (date) => {
             count++
 
             if (count > day && count - day <= daysOfMont(date.month).value) {
-
                 countDay++
-
-                todayClass = (new Date().getDate() === countDay && new Date().getMonth() === date.month && new Date().getFullYear() === Number(date.year))? 'day today' : 'day';
-
-                td.push(createElement(
-                    'td',
-                    { className: todayClass },
-                    createElement('div', { className: 'current_month' }, countDay)
-                ))
+                td.push(getDays(countDay, date.month, date.year, 'current_month'))
             } else if (count - day <= daysOfMont(date.month).value) {
-
                 previousDaysOfMonth++
+                let year = date.year;
+                let month;
 
-                todayClass = (new Date().getDate() === previousDaysOfMonth && new Date().getMonth() === date.month - 1 && new Date().getFullYear() === Number(date.year))? 'day today' : 'day';
+                if (date.month === 0 && new Date().getFullYear() === date.year - 1) {
+                    year = new Date().getFullYear();
+                    month = 11;
+                } else {
+                    month = date.month - 1
+                }
 
-                td.push(createElement(
-                    'td',
-                    { className: todayClass },
-                    createElement('div', { className: 'previous_month' }, previousDaysOfMonth)
-                ))
+                td.push(getDays(previousDaysOfMonth, month, year, 'previous_month'))
             } else {
                 nextDaysOfMonth++
 
-                todayClass = (new Date().getDate() === nextDaysOfMonth && new Date().getMonth() === date.month + 1 && new Date().getFullYear() === Number(date.year))? 'day today' : 'day';
+                let year = date.year;
+                let month;
 
-                td.push(createElement(
-                    'td',
-                    { className: todayClass },
-                    createElement('div', { className: 'next_month' }, nextDaysOfMonth)
-                ))
+                if (date.month === 11 && new Date().getFullYear() === date.year + 1) {
+                    year = new Date().getFullYear();
+                    month = 0;
+                    console.log('entro');
+                } else {
+                    month = Number(date.month) + 1
+                }
+
+                td.push(getDays(nextDaysOfMonth, month, year, 'next_month'))
             }
         }
         tr.push(createElement('tr', null, [td]))
     }
     return tr;
+}
+
+function getDays(day, month, year, monthClass) {
+    let todayClass;
+    const date = new Date();
+
+    console.log(month);
+    console.log(year);
+
+    if (date.getDate() === day &&
+        date.getMonth() === month &&
+        date.getFullYear() === Number(year)) {
+
+        todayClass = 'day today';
+    } else {
+        todayClass = 'day';
+    }
+
+    return createElement(
+        'td',
+        { className: todayClass },
+        createElement('div', { className: monthClass }, day)
+    )
 }
 
 //Años bisiesto
@@ -110,4 +131,3 @@ export {
     daysOfMont,
     getRows
 }
-

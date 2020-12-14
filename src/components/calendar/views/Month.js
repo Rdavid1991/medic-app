@@ -22,11 +22,11 @@ export const Month = ({date,setDate}) => {
     return (
         <>
         <h1>{daysOfMont(date.month).name} {date.year}</h1>
-        <select value={date.year} onChange={(e) => setDate({ ...date, year: e.target.value })}>
+        <select value={date.year} onChange={(e) => setDate({ ...date, year: Number(e.target.value)})}>
             {getYears()}
         </select>
 
-        <select value={date.month} onChange={(e) => setDate({ ...date, month: e.target.value })}>
+        <select value={date.month} onChange={(e) => setDate({ ...date, month: Number(e.target.value) })}>
             {getMonths()}
         </select>
 
