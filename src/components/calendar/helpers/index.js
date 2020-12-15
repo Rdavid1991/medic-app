@@ -1,6 +1,10 @@
 import { createElement } from 'react'
 
-const getRows = (date) => {
+let createTaskFn;
+
+const getRows = (date,createTask) => {
+
+    createTaskFn = createTask;
     let td = [], tr = [], count = 0, countDay = 0;
     let day = new Date(date.year, date.month).getDay();
     let previousDaysOfMonth = daysOfMont(date.month - 1).value - day + 1;
@@ -33,8 +37,8 @@ const getRows = (date) => {
                 let year = date.year;
                 let month;
 
-                if (date.month === 11 && new Date().getFullYear() === date.year + 1) {
-                    year = new Date().getFullYear();
+                if (date.month === 11) {
+                    year = new Date().getFullYear() + 1;
                     month = 0;
                     console.log('entro');
                 } else {
@@ -53,9 +57,6 @@ function getDays(day, month, year, monthClass) {
     let todayClass;
     const date = new Date();
 
-    console.log(month);
-    console.log(year);
-
     if (date.getDate() === day &&
         date.getMonth() === month &&
         date.getFullYear() === Number(year)) {
@@ -67,8 +68,13 @@ function getDays(day, month, year, monthClass) {
 
     return createElement(
         'td',
-        { className: todayClass },
-        createElement('div', { className: monthClass }, day)
+        { 
+            className: todayClass,
+            onClick:()=>createTaskFn(day,month,year)
+        },
+        createElement('div', { 
+            className: monthClass,
+        }, day)
     )
 }
 
@@ -127,7 +133,13 @@ function daysOfMont(item) {
     return array[item]
 }
 
+const daysName = (index)=>{
+    const arrayDay = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
+    return arrayDay[index];
+}
+
 export {
     daysOfMont,
-    getRows
+    getRows,
+    daysName
 }
