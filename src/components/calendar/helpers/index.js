@@ -2,12 +2,12 @@ import { createElement } from 'react'
 
 let createTaskFn;
 
-const getRows = (date,createTask) => {
+const getRows = (date, createTask) => {
 
     createTaskFn = createTask;
     let td = [], tr = [], count = 0, countDay = 0;
     let day = new Date(date.year, date.month).getDay();
-    let previousDaysOfMonth = daysOfMont(date.month - 1).value - day + 1;
+    let previousDaysOfMonth = daysOfMont(date.month - 1).value - day;
     let nextDaysOfMonth = 0;
 
     for (let i = 0; i < 6; i++) {
@@ -18,13 +18,13 @@ const getRows = (date,createTask) => {
             if (count > day && count - day <= daysOfMont(date.month).value) {
                 countDay++
                 td.push(getDays(countDay, date.month, date.year, 'current_month'))
-            } else if (count - day <= daysOfMont(date.month).value) {
+            } else if (count <= day) {
                 previousDaysOfMonth++
                 let year = date.year;
                 let month;
 
-                if (date.month === 0 && new Date().getFullYear() === date.year - 1) {
-                    year = new Date().getFullYear();
+                if (date.month === 0 /* && new Date().getFullYear() === date.year - 1 */) {
+                    year = date.year - 1
                     month = 11;
                 } else {
                     month = date.month - 1
@@ -40,7 +40,6 @@ const getRows = (date,createTask) => {
                 if (date.month === 11) {
                     year = new Date().getFullYear() + 1;
                     month = 0;
-                    console.log('entro');
                 } else {
                     month = Number(date.month) + 1
                 }
@@ -51,6 +50,29 @@ const getRows = (date,createTask) => {
         tr.push(createElement('tr', null, [td]))
     }
     return tr;
+}
+
+const drawTask = (day, month, year) => {
+
+    let taskYear = '', taskMont = '',taskDay = '';
+
+    let task = JSON.parse(localStorage.getItem('task')) | []
+
+    if (task.lenght > 0) {
+        taskYear = task.date.split('-')[0]
+        taskMont = task.date.split('-')[1]
+        taskDay = task.date.split('-')[2]
+    }
+
+
+    if (taskDay == day && taskMont == month + 1 && taskYear == year) {
+        return (
+            createElement('div', {
+
+            }, task.title)
+        )
+    }
+
 }
 
 function getDays(day, month, year, monthClass) {
@@ -68,13 +90,14 @@ function getDays(day, month, year, monthClass) {
 
     return createElement(
         'td',
-        { 
+        {
             className: todayClass,
-            onClick:()=>createTaskFn(day,month,year)
+            onClick: () => createTaskFn(day, month, year)
         },
-        createElement('div', { 
-            className: monthClass,
-        }, day)
+        createElement('div', {
+            className: `${monthClass} date`,
+        }, day),
+        drawTask(day, month, year)
     )
 }
 
@@ -90,6 +113,8 @@ function daysOfMont(item) {
 
     if (item < 0) {
         item = 11
+    }else if(item > 11){
+        item = 0
     }
 
     const array = [
@@ -133,7 +158,7 @@ function daysOfMont(item) {
     return array[item]
 }
 
-const daysName = (index)=>{
+const daysName = (index) => {
     const arrayDay = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
     return arrayDay[index];
 }
