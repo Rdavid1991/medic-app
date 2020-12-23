@@ -1,83 +1,105 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FormTask } from './formTask/FormTask';
 
 import "./calendar.css";
 import { Days } from './views/Days';
 import { daysOfMont } from './helpers';
+import { Month } from './views/Month';
 
 export default function Calendar() {
 
-    const init = {
+    const initDateState = {
         day: new Date().getDate(),
         month: new Date().getMonth(),
         year: new Date().getFullYear()
     }
 
-    const [date, setDate] = useState(init)
+    const [date, setDate] = useState(initDateState)
 
-    const handleNextMonth = () => {
+    const initViewState = {
+        type: "days"
+    }
 
-        let nextMonth = date.month + 1
+    const [view, setView] = useState(initViewState)
 
-        if (nextMonth > 11) {
-            let nextYear = Number(date.year) + 1
+    const changeViewToOut = (month, year) => {
 
-            setDate({
-                year: nextYear,
-                month: 0
-            })
-        } else {
-            setDate({
-                ...date,
-                month: nextMonth
+        setDate({
+            ...date,
+            month: month,
+            year: year
+        })
+
+        setView(initViewState)
+
+    }
+
+    const changeViewToIn = () => {
+        if (view.type === "days") {
+            setView({
+                type: "month"
             })
         }
     }
 
-    const handlePreviousMont = () => {
-        let previousMonth = date.month - 1
+    const setNextMonth = (day, month, year) => {
+        setDate({
+            day,
+            month,
+            year
+        })
+    }
 
-        if (previousMonth < 0) {
-            let previousYear = date.year - 1
 
-            setDate({
-                year: previousYear,
-                month: 11
-            })
-        } else {
-            setDate({
-                ...date,
-                month: previousMonth
-            })
+    const handleNextMonth = ({ type }, { day, month, year }) => {
+
+        let nextMonth = date.month + 1, nextYear = Number(date.year) + 1
+
+        if (type === "days") {
+
+            if (nextMonth > 11) {
+                setNextMonth(day, 0, nextYear)
+            } else {
+                setNextMonth(day, nextMonth, year)
+            }
+        } else if (type === "month") {
+            setNextMonth(day, month, nextYear)
         }
     }
 
-    const getMonths = () => {
-        let options = [];
-        for (let i = 0; i < 12; i++) {
-            options.push(<option value={i}>{daysOfMont(i).name}</option>)
-        }
-        return options;
+    const setPreviousMonth = (day, month, year) => {
+        setDate({
+            day,
+            month,
+            year
+        })
     }
 
-    const getYears = () => {
-        let options = [];
-        for (let i = date.year - 50; i <= Number(date.year) + 50; i++) {
-            options.push(<option value={i}>{i}</option>)
+    const handlePreviousMont = ({ type }, { day, month, year }) => {
+        let previousMonth = month - 1, previousYear = year - 1;
+
+        if (type === "days") {
+            if (previousMonth < 0) {
+
+                setPreviousMonth(day, 11, previousYear)
+            } else {
+                setPreviousMonth(day, previousMonth, year)
+            }
+        } else if (type === "month") {
+            setPreviousMonth(day, month, previousYear)
         }
-        return options;
+    }
+
+    const titleView = ({ type }) => {
+        if (type === "days") {
+            return `${daysOfMont(date.month).name} ${date.year}`
+        } else if (type === "month") {
+            return `${date.year}`
+        }
     }
 
     return (
         <>
-
-            <select value={date.year} onChange={(e) => setDate({ ...date, year: Number(e.target.value) })}>
-                {getYears()}
-            </select>
-
-            <select value={date.month} onChange={(e) => setDate({ ...date, month: Number(e.target.value) })}>
-                {getMonths()}
-            </select>
 
             <div
                 className="calendar_container"
@@ -90,34 +112,53 @@ export default function Calendar() {
                     >
                         <input
                             type="button"
-                            onClick={handlePreviousMont}
-                            value={daysOfMont(date.month - 1).name}
+                            onClick={() => handlePreviousMont(view, date)}
+                            value="<"
                             className="calendar_button"
                         />
                         <input
                             type="button"
-                            onClick={() => setDate(init)}
+                            onClick={() => setDate(initDateState)}
                             value="Hoy"
                             className="calendar_button"
 
                         />
                         <input
                             type="button"
-                            onClick={handleNextMonth}
-                            value={daysOfMont(date.month + 1).name}
+                            onClick={() => handleNextMonth(view, date)}
+                            value=">"
                             className="calendar_button"
 
                         />
                     </div>
 
-                    <h3 
+                    <h3
                         className="calendar_title"
-                    >{daysOfMont(date.month).name} {date.year}</h3>
+                        onClick={changeViewToIn}
+                    >
+                        {titleView(view)}
+                    </h3>
 
-                    <Days
-                        date={date}
-                        setDate={setDate}
-                    />
+                    {
+                        view.type === "days"
+                            ?
+                            <Days
+                                date={date}
+                                setDate={setDate}
+                            />
+                            :
+                            null
+                    }
+                    {
+                        view.type === "month"
+                            ?
+                            <Month
+                                changeViewToOut={changeViewToOut}
+                                date={date}
+                            />
+                            :
+                            null
+                    }
                 </div>
             </div>
         </>

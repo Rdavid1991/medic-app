@@ -3,8 +3,6 @@ import { getRows, daysOfMont } from '../helpers';
 
 export const Days = ({ date, setDate }) => {
 
-   
-
     const createTask = (day, month, year) => {
         setDate({ day, month, year });
     }
@@ -27,8 +25,6 @@ export const Days = ({ date, setDate }) => {
                     {getRows(date, createTask)}
                 </tbody>
             </table>
-
-            
         </>
     )
 }

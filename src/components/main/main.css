@@ -1,0 +1,18 @@
+.container{
+    height: 100vh;
+}
+
+.main-container{
+    display: flex;
+    height: 100%;
+}
+
+.nav{
+    background-color: burlywood;
+    height: 10%;
+}
+
+.side-bar{
+    width: 20%;
+    background-color: bisque;
+}

@@ -47,14 +47,19 @@ const getRows = (date, createTask) => {
                 td.push(getDays(nextDaysOfMonth, month, year, 'next_month'))
             }
         }
-        tr.push(createElement('tr', null, [td]))
+        tr.push(createElement(
+            'tr',
+            {
+                "key": `${i}`
+            },
+            [td]))
     }
     return tr;
 }
 
 const drawTask = (day, month, year) => {
 
-    let taskYear = '', taskMont = '',taskDay = '';
+    let taskYear = '', taskMont = '', taskDay = '';
 
     let task = JSON.parse(localStorage.getItem('task')) | []
 
@@ -79,8 +84,8 @@ function getDays(day, month, year, monthClass) {
     let todayClass;
     const date = new Date();
 
-    if (date.getDate() === day &&
-        date.getMonth() === month &&
+    if (date.getDate() === Number(day) &&
+        date.getMonth() === Number(month) &&
         date.getFullYear() === Number(year)) {
 
         todayClass = 'day today';
@@ -91,6 +96,7 @@ function getDays(day, month, year, monthClass) {
     return createElement(
         'td',
         {
+            "key": `${day}${month}${year}`,
             className: todayClass,
             onClick: () => createTaskFn(day, month, year)
         },
@@ -113,17 +119,17 @@ function daysOfMont(item) {
 
     if (item < 0) {
         item = 11
-    }else if(item > 11){
+    } else if (item > 11) {
         item = 0
     }
 
     const array = [
         {
             name: "Enero",
-            value: 31
+            value: 31,
         }, {
             name: "Febrero",
-            value: feb
+            value: feb,
         }, {
             name: "Marzo",
             value: 31
