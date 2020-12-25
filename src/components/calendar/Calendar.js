@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { FormTask } from './formTask/FormTask';
-
+import React, { useState } from 'react';
 import "./calendar.css";
 import { Days } from './views/Days';
 import { daysOfMont } from './helpers';
@@ -9,71 +7,71 @@ import { Month } from './views/Month';
 export default function Calendar() {
 
     const initDateState = {
-        day: new Date().getDate(),
+        day  : new Date().getDate(),
         month: new Date().getMonth(),
-        year: new Date().getFullYear()
-    }
+        year : new Date().getFullYear()
+    };
 
-    const [date, setDate] = useState(initDateState)
+    const [date, setDate] = useState(initDateState);
 
     const initViewState = {
         type: "days"
-    }
+    };
 
-    const [view, setView] = useState(initViewState)
+    const [view, setView] = useState(initViewState);
 
     const changeViewToOut = (month, year) => {
 
         setDate({
             ...date,
             month: month,
-            year: year
-        })
+            year : year
+        });
 
-        setView(initViewState)
+        setView(initViewState);
 
-    }
+    };
 
     const changeViewToIn = () => {
         if (view.type === "days") {
             setView({
                 type: "month"
-            })
+            });
         }
-    }
+    };
 
     const setNextMonth = (day, month, year) => {
         setDate({
             day,
             month,
             year
-        })
-    }
+        });
+    };
 
 
     const handleNextMonth = ({ type }, { day, month, year }) => {
 
-        let nextMonth = date.month + 1, nextYear = Number(date.year) + 1
+        let nextMonth = date.month + 1, nextYear = Number(date.year) + 1;
 
         if (type === "days") {
 
             if (nextMonth > 11) {
-                setNextMonth(day, 0, nextYear)
+                setNextMonth(day, 0, nextYear);
             } else {
-                setNextMonth(day, nextMonth, year)
+                setNextMonth(day, nextMonth, year);
             }
         } else if (type === "month") {
-            setNextMonth(day, month, nextYear)
+            setNextMonth(day, month, nextYear);
         }
-    }
+    };
 
     const setPreviousMonth = (day, month, year) => {
         setDate({
             day,
             month,
             year
-        })
-    }
+        });
+    };
 
     const handlePreviousMont = ({ type }, { day, month, year }) => {
         let previousMonth = month - 1, previousYear = year - 1;
@@ -81,41 +79,34 @@ export default function Calendar() {
         if (type === "days") {
             if (previousMonth < 0) {
 
-                setPreviousMonth(day, 11, previousYear)
+                setPreviousMonth(day, 11, previousYear);
             } else {
-                setPreviousMonth(day, previousMonth, year)
+                setPreviousMonth(day, previousMonth, year);
             }
         } else if (type === "month") {
-            setPreviousMonth(day, month, previousYear)
+            setPreviousMonth(day, month, previousYear);
         }
-    }
+    };
 
     const titleView = ({ type }) => {
         if (type === "days") {
-            return `${daysOfMont(date.month).name} ${date.year}`
+            return `${daysOfMont(date.month).name} ${date.year}`;
         } else if (type === "month") {
-            return `${date.year}`
+            return `${date.year}`;
         }
-    }
+    };
 
     return (
         <>
-
             <div
-                className="calendar_container"
+                className="calendar"
             >
                 <div
-                    className="calendar"
+                    className="calendar_options"
                 >
                     <div
-                        className="calendar_options"
+                        className="left"
                     >
-                        <input
-                            type="button"
-                            onClick={() => handlePreviousMont(view, date)}
-                            value="<"
-                            className="calendar_button"
-                        />
                         <input
                             type="button"
                             onClick={() => setDate(initDateState)}
@@ -125,20 +116,36 @@ export default function Calendar() {
                         />
                         <input
                             type="button"
+                            onClick={() => handlePreviousMont(view, date)}
+                            value="<"
+                            className="calendar_button"
+                        />
+                        <input
+                            type="button"
                             onClick={() => handleNextMonth(view, date)}
                             value=">"
                             className="calendar_button"
 
                         />
+                        <div
+                            className="calendar_title"
+                            onClick={changeViewToIn}
+                        >
+                            {titleView(view)}
+                        </div>
                     </div>
-
-                    <h3
-                        className="calendar_title"
-                        onClick={changeViewToIn}
+                    <div
+                        className="right"
                     >
-                        {titleView(view)}
-                    </h3>
+                        <input
+                            type="button"
+                            value="Agregar cita"
+                        /> 
 
+                    </div>
+                </div>
+
+                <div className="calendar_table">
                     {
                         view.type === "days"
                             ?
@@ -162,5 +169,5 @@ export default function Calendar() {
                 </div>
             </div>
         </>
-    )
+    );
 }

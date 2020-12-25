@@ -1,62 +1,92 @@
-
-
-table td{
-  padding: 5px;
-  position: relative;
-  width: 5rem;
-  border-radius: 10px;
+table td {
+    padding: 5px;
+    position: relative;
+    width: 5rem;
+    border: 1px solid #C2FBFF
 }
 
 .date {
-  font-size: 24px;
-  font-weight: bold;
-  text-align: left; 
-  position: absolute;
-  top: 0;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: left;
+    position: absolute;
+    top: 0;
 }
 
-tbody tr{
-  height:5rem;
+tbody tr {
 }
 
-.day:hover{
-  cursor: pointer;
-  background-color: #f9b2b2;
+.day:hover {
+    cursor: pointer;
+    background-color: #98264856;
+    color: #000000;
 }
 
-.previous_month{
-  color: gray
+.previous_month {
+    color: gray
 }
 
-.next_month{
-  color: gray;
+.next_month {
+    color: gray;
 }
 
-.today{
-  background-color: red
+.today {
+    background-color: #982649;
+    color:#FFFFFF
 }
 
-.calendar_container{
-  display: flex;
-  justify-content: center;
-  align-items: center; 
-  width: 70%;
+.calendar_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
-.calendar_options{
-  display: flex;
-  justify-content: space-between;
+.calendar_options {
+    display: flex;
+    justify-content: space-between;
 }
 
-.calendar_button{
-  width: 10rem;
-  height: 3rem;
-  font-size: 18px;
-  font-weight: bold;
-  border-radius: 10px;
-  cursor: pointer;
+.left{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 20%
 }
 
-.calendar_title{
-  text-align: center;
+.right{
+    display: flex;
+}
+
+.calendar_button {
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.calendar_title {
+    text-align: center;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.calendar {
+    display: grid;
+    grid-template-rows: 5% 95%;
+}
+
+.calendar table th {
+    height: 0.5rem;
+    background: #71A2B6;
+    color: #FFFFFF;
+    border-radius: 10px;
+}
+
+.calendar_table > table {
+    width: 100%;
+    height: 100%;
+}
+
+.selected {
+    background-color: #98264856;
 }

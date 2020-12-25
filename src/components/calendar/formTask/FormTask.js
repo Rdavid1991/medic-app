@@ -1,33 +1,35 @@
-import React, { useEffect, useState } from 'react'
-import { daysName, daysOfMont } from '../helpers'
+import React, { useEffect, useState } from 'react';
+import { daysName, daysOfMont } from '../helpers';
 
-export const FormTask = ({ state }) => {
+export const FormTask = (props) => {
+
+    const state = props;
 
     const [task, setTask] = useState({
-        date: '',
-        title:''
-    })
+        date : '',
+        title: ''
+    });
 
     useEffect(() => {
         handleTask({
-            target:{
-                name:'date',
-                value:`${state.year}-${state.month + 1}-${state.day}`
+            target: {
+                name : 'date',
+                value: `${state.year}-${state.month + 1}-${state.day}`
             }
-        })
+        });
         
-    }, [task.title])
+    }, [task.title]);
 
     const handleTask = ({target})=>{
         setTask({
             ...task,
             [target.name]: target.value
-        })
-    }
+        });
+    };
 
     const handleSave = ()=>{
-        localStorage.setItem('task', JSON.stringify(task))
-    }
+        localStorage.setItem('task', JSON.stringify(task));
+    };
 
     return (
         <div>
@@ -59,5 +61,5 @@ export const FormTask = ({ state }) => {
                 Guardar
             </button>
         </div>
-    )
-}
+    );
+};

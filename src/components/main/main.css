@@ -1,18 +1,21 @@
-.container{
-    height: 100vh;
+.container {
+    height: 98vh;
+    display: grid;
+    grid-template-rows: 10% 90%;
 }
 
-.main-container{
-    display: flex;
+.main-container {
+    display: grid;
+    /* height: 100%; */
+    grid-template-columns: 15% 85%;
+}
+
+.nav {
+    background-color: burlywood;
     height: 100%;
 }
 
-.nav{
-    background-color: burlywood;
-    height: 10%;
-}
-
-.side-bar{
-    width: 20%;
+.side-bar {
+    width: 100%;
     background-color: bisque;
 }

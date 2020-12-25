@@ -1,15 +1,13 @@
-import "./main.css"
-import React from 'react'
-import Calendar from '../calendar/Calendar'
+import "./main.css";
+import React from 'react';
+import Calendar from '../calendar/Calendar';
 
 export const Main = () => {
     return (
         <div
             className="container"
         >
-
             <nav
-
                 className = "nav"
             >
                 Hola mundo
@@ -28,5 +26,5 @@ export const Main = () => {
 
             </div>
         </div>
-    )
-}
+    );
+};

@@ -1,5 +1,6 @@
-import React, { createElement } from 'react'
+import React, { createElement } from 'react';
 import { daysOfMont } from '../helpers';
+import PropTypes from 'prop-types';
 
 export const Month = ({ changeViewToOut, date }) => {
 
@@ -13,31 +14,30 @@ export const Month = ({ changeViewToOut, date }) => {
 
                 if (month > 11) {
                     month = 0;
-                    year++
+                    year++;
                 }
                 
-
                 td.push(createElement(
                     'td',
                     {
-                        "key":`${j}`,
+                        "key"       : `${j}`,
                         "data-month": month,
-                        "data-year": year,
-                        "onClick": ({target}) => changeViewToOut(target.dataset.month, target.dataset.year)
+                        "data-year" : year,
+                        "onClick"   : ({target}) => changeViewToOut(target.dataset.month, target.dataset.year)
                     },
                     daysOfMont(month).name
-                ))
+                ));
                 month++;
             }
             tr.push(createElement(
                 'tr', 
                 {
-                    "key":`${i}`
+                    "key": `${i}`
                 }, 
-                [td]))
+                [td]));
         }
         return tr;
-    }
+    };
 
 
     return (
@@ -48,5 +48,10 @@ export const Month = ({ changeViewToOut, date }) => {
                 </tbody>
             </table>
         </>
-    )
-}
+    );
+};
+
+Month.propTypes = {
+    changeViewToOut: PropTypes.func.isRequired,
+    date           : PropTypes.object.isRequired
+};
