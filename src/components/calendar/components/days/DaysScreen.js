@@ -1,8 +1,8 @@
 import React from 'react';
-import { getRows } from '../helpers';
+import { getDaysTable } from '../../helpers/days';
 import PropTypes from 'prop-types';
 
-export const Days = ({ date, setDate }) => {
+export const DaysScreen = ({ date, setDate }) => {
 
     const createTask = (day, month, year) => {
         setDate({ day, month, year });
@@ -23,7 +23,7 @@ export const Days = ({ date, setDate }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {getRows(
+                    {getDaysTable(
                         date,
                         createTask
                     )}
@@ -33,7 +33,7 @@ export const Days = ({ date, setDate }) => {
     );
 };
 
-Days.propTypes = {
+DaysScreen.propTypes = {
     date   : PropTypes.object.isRequired,
     setDate: PropTypes.func.isRequired
 };

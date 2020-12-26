@@ -1,4 +1,4 @@
-import "./main.css";
+import "./main.scss";
 import React from 'react';
 import Calendar from '../calendar/Calendar';
 

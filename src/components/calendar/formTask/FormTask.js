@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { daysName, daysOfMont } from '../helpers';
+import { daysName, daysOfMont } from '../helpers/days';
 
 export const FormTask = (props) => {
 

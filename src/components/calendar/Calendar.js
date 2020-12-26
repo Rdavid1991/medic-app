@@ -1,8 +1,9 @@
+import "./styles/calendar.scss";
 import React, { useState } from 'react';
-import "./calendar.css";
-import { Days } from './views/Days';
-import { daysOfMont } from './helpers';
-import { Month } from './views/Month';
+import { DaysScreen } from './components/days/DaysScreen';
+import { MonthScreen } from './components/month/MonthScreen';
+import { months } from './helpers/general';
+import { Modal } from "./components/modal/Modal";
 
 export default function Calendar() {
 
@@ -11,16 +12,22 @@ export default function Calendar() {
         month: new Date().getMonth(),
         year : new Date().getFullYear()
     };
-
-    const [date, setDate] = useState(initDateState);
-
+    
     const initViewState = {
         type: "days"
     };
 
+    const initialModalState = false;
+
+    const [date, setDate] = useState(initDateState);
+
     const [view, setView] = useState(initViewState);
 
+    const [modal, setModal] = useState(initialModalState);
+
     const changeViewToOut = (month, year) => {
+
+        console.log(month);
 
         setDate({
             ...date,
@@ -47,7 +54,6 @@ export default function Calendar() {
             year
         });
     };
-
 
     const handleNextMonth = ({ type }, { day, month, year }) => {
 
@@ -90,10 +96,14 @@ export default function Calendar() {
 
     const titleView = ({ type }) => {
         if (type === "days") {
-            return `${daysOfMont(date.month).name} ${date.year}`;
+            return `${months(date.month).name} ${date.year}`;
         } else if (type === "month") {
             return `${date.year}`;
         }
+    };
+
+    const handleShowModal = ()=>{
+        setModal(!modal);
     };
 
     return (
@@ -140,6 +150,7 @@ export default function Calendar() {
                         <input
                             type="button"
                             value="Agregar cita"
+                            onClick={handleShowModal}
                         /> 
 
                     </div>
@@ -149,7 +160,7 @@ export default function Calendar() {
                     {
                         view.type === "days"
                             ?
-                            <Days
+                            <DaysScreen
                                 date={date}
                                 setDate={setDate}
                             />
@@ -159,7 +170,7 @@ export default function Calendar() {
                     {
                         view.type === "month"
                             ?
-                            <Month
+                            <MonthScreen
                                 changeViewToOut={changeViewToOut}
                                 date={date}
                             />
@@ -168,6 +179,10 @@ export default function Calendar() {
                     }
                 </div>
             </div>
+            <Modal
+                modal={modal}
+                handleShowModal={handleShowModal}
+            />
         </>
     );
 }
